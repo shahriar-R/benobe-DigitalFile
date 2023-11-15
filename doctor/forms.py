@@ -14,9 +14,9 @@ from . import models
 ]'''
 
 
-class DoctorRegisterForm(UserCreationForm):
+class DoctorRegisterForm(forms.ModelForm):
     
-    # dep = [('Cardiologist','Cardiologist')] 
+    dep = [('Cardiologist','Cardiologist')] 
     username = forms.CharField(required=True,label="",widget=forms.TextInput(attrs={'placeholder': 'USERNAME'}))
     username.widget.attrs.update({'class' : 'app-form-control'})
     
@@ -42,8 +42,8 @@ class DoctorRegisterForm(UserCreationForm):
     image = forms.ImageField(label="")
     image.widget.attrs.update({'class' : 'app-form-control'})
     
-    # department = forms.CharField(label="",widget = forms.Select(choices=dep))
-    # department.widget.attrs.update({'class' : 'app-form-control'})
+    department = forms.CharField(label="",widget = forms.Select(choices=dep))
+    department.widget.attrs.update({'class' : 'app-form-control'})
 
     password1 = forms.CharField(label='',widget=forms.PasswordInput(attrs={'placeholder': 'PASSWORD'}))
     password1.widget.attrs.update({'class' : 'app-form-control'})
@@ -53,7 +53,7 @@ class DoctorRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'firstname', 'lastname','department', 'dob', 'address', 'city',  'postalcode', 'password1', 'password2','image']
+        fields = ['username', 'firstname', 'lastname','department', 'dob', 'address', 'city',  'image', 'password1', 'password2']
         #fields = ['username', 'email', 'firstname', 'lastname', 'age', 'dob', 'address', 'city', 'country', 'postalcode', 'password1', 'password2']
         help_texts = {k:"" for k in fields}
     
@@ -67,7 +67,7 @@ class DoctorRegisterForm(UserCreationForm):
     
 
 
-class ReceptionistRegisterForm(UserCreationForm):  #used to register an admin
+class ReceptionistRegisterForm(forms.ModelForm):  #used to register an admin
     username = forms.CharField(required=True,label="",widget=forms.TextInput(attrs={'placeholder': 'USERNAME'}))
     username.widget.attrs.update({'class' : 'app-form-control'})
     

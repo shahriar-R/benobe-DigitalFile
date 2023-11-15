@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from datetime import date,timedelta,time
+from django.contrib.auth.models import User,Group
+from django.utils import timezone
 
+from .models import Doctor
 from .forms import DoctorRegisterForm, ReceptionistRegisterForm
 
 
@@ -33,7 +37,7 @@ def register_doc_view(request):
     else: 
         form = DoctorRegisterForm()
     
-    return render(request,'register_doc.html',{'form': form})
+    return render(request,'hospital/Doctor/register_doc.html',{'form': form})
 
 
 
@@ -47,17 +51,17 @@ def register_adm_view(request):
             ag =  today.year - db.year - ((today.month, today.day) < (db.month, db.day))    #calculate age from dob
             if db < timezone.now().date():  #check if date of birth is valid (happened the previous day or even back)
                 nu = User.objects.create_user(username=form.cleaned_data.get('username'),email=form.cleaned_data.get('email'),password=form.cleaned_data.get('password1'))  #create user
-                adm = Admin(user=nu,firstname=form.cleaned_data.get('firstname'),
-                            lastname=form.cleaned_data.get('lastname'),
-                            age=ag,
-                            dob=form.cleaned_data.get('dob'),
-                            address=form.cleaned_data.get('address'),
-                            city=form.cleaned_data.get('city'),
-                            country=form.cleaned_data.get('country'),
-                            postalcode=form.cleaned_data.get('postalcode'),
-                            image=request.FILES['image']
-                            )   #create admin
-                adm.save()
+                # adm = Admin(user=nu,firstname=form.cleaned_data.get('firstname'),
+                #             lastname=form.cleaned_data.get('lastname'),
+                #             age=ag,
+                #             dob=form.cleaned_data.get('dob'),
+                #             address=form.cleaned_data.get('address'),
+                #             city=form.cleaned_data.get('city'),
+                #             country=form.cleaned_data.get('country'),
+                #             postalcode=form.cleaned_data.get('postalcode'),
+                #             image=request.FILES['image']
+                #             )   #create admin
+                # adm.save()
                 mpg = Group.objects.get_or_create(name='ADMIN') #add user to admin group
                 mpg[0].user_set.add(nu)
                 return redirect('login_adm.html')
@@ -69,4 +73,4 @@ def register_adm_view(request):
     else: 
         form = AdminRegisterForm()
     
-    return render(request,'register_adm.html',{'form': form})
+    return render(request,'hospital/Admin/register_adm.html',{'form': form})
