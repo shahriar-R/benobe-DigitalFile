@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # apps
     'doctor',
     'patient',
+    'users',
     
 ]
 
@@ -104,6 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
+AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

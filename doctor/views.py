@@ -1,76 +1,47 @@
 from django.shortcuts import render, redirect
-from datetime import date,timedelta,time
-from django.contrib.auth.models import User,Group
-from django.utils import timezone
+from django.urls import reverse
 
-from .models import Doctor
-from .forms import DoctorRegisterForm, ReceptionistRegisterForm
+# from django.shortcuts import reverse
+from django.views.generic import (CreateView, ListView, UpdateView, DeleteView)
+from . models import Services
 
 
-def register_doc_view(request):
-    if request.method=="POST":
-        form = DoctorRegisterForm(request.POST, request.FILES)
-        if form.is_valid(): #if form is valid
-            db = form.cleaned_data.get('dob')   #get date of birth from form
-            if db < timezone.now().date():  #if date of birth is valid
-                nu = User.objects.create_user(username=form.cleaned_data.get('username'),email=form.cleaned_data.get('email'),password=form.cleaned_data.get('password1'))  #create new user
-                doc = Doctor(user=nu,firstname=form.cleaned_data.get('firstname'),
-                        lastname=form.cleaned_data.get('lastname'),
-                        department=form.cleaned_data.get('department'),
-                        dob=form.cleaned_data.get('dob'),
-                        address=form.cleaned_data.get('address'),
-                        city=form.cleaned_data.get('city'),
-                        country=form.cleaned_data.get('country'),
-                        postalcode=form.cleaned_data.get('postalcode'),
-                        image=request.FILES['image'])   #create new doctor
-                doc.save()
-                dp = DoctorProfessional(doctor=doc,appfees=200,admfees=2000)    #ccreate doctor professional model instance using default prices
-                dp.save()
-                mpg = Group.objects.get_or_create(name='DOCTOR')    #add user to doctor group
-                mpg[0].user_set.add(nu)
-                return redirect('login_doc.html')
-            else:   #if date of birth is invalid
-                form.add_error('dob', 'Invalid date of birth.')
-                return render(request,'hospital/Doctor/register_doc.html',{'form': form})
-        else:
-            print(form.errors)
-    else: 
-        form = DoctorRegisterForm()
+
+class ServicesCreateView(CreateView):
+    model = Services
+    fields = ['name', 'description']
+    # the template that will render the data/form.
+    template_name = 'hospital/services_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['table_title'] = 'Add A New Service'
+        print(context)
+        return context
+    def get_success_url(self) -> str:
+        return reverse('services-list')
     
-    return render(request,'hospital/Doctor/register_doc.html',{'form': form})
+class ServicesListView(ListView):
+    model = Services
+    template_name = 'hospital/services_list.html'
+    context_object_name = 'services'
+    ordering = ['-pk']
+    paginate_by = 10
 
-
-
-
-def register_adm_view(request):
-    if request.method=="POST":
-        form = ReceptionistRegisterForm(request.POST, request.FILES)
-        if form.is_valid():     #get data from form (if it is valid)
-            db = form.cleaned_data.get('dob')   #get date of birth from form
-            today = date.today()
-            ag =  today.year - db.year - ((today.month, today.day) < (db.month, db.day))    #calculate age from dob
-            if db < timezone.now().date():  #check if date of birth is valid (happened the previous day or even back)
-                nu = User.objects.create_user(username=form.cleaned_data.get('username'),email=form.cleaned_data.get('email'),password=form.cleaned_data.get('password1'))  #create user
-                # adm = Admin(user=nu,firstname=form.cleaned_data.get('firstname'),
-                #             lastname=form.cleaned_data.get('lastname'),
-                #             age=ag,
-                #             dob=form.cleaned_data.get('dob'),
-                #             address=form.cleaned_data.get('address'),
-                #             city=form.cleaned_data.get('city'),
-                #             country=form.cleaned_data.get('country'),
-                #             postalcode=form.cleaned_data.get('postalcode'),
-                #             image=request.FILES['image']
-                #             )   #create admin
-                # adm.save()
-                mpg = Group.objects.get_or_create(name='ADMIN') #add user to admin group
-                mpg[0].user_set.add(nu)
-                return redirect('login_adm.html')
-            else:
-                form.add_error('dob', 'Invalid date of birth.')
-        else:
-            print(form.errors)
-            return render(request,'hospital/Admin/register_adm.html',{'form': form})
-    else: 
-        form = AdminRegisterForm()
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
     
-    return render(request,'hospital/Admin/register_adm.html',{'form': form})
+class ServicesDeleteView(DeleteView):
+    model = Services
+    success_url = '/'
+    template_name = 'users/confirm_delete.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Service'
+        service_name = Services.objects.get(pk=self.kwargs.get('pk')).name
+        context['message'] = f'Are you sure you want to delete "{service_name}" ?'
+        context['cancel_url'] = 'services-list'
+        print(context)
+        return context

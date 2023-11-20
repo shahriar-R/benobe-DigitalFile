@@ -1,4 +1,5 @@
 from django.db import models
+'''
 from django.contrib.auth.models import User
 import datetime
 
@@ -36,3 +37,18 @@ class Receptionist(models.Model):
 	phone = models.CharField(max_length=12,default="",unique=True)
 	doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE)
 	username = models.OneToOneField(User,on_delete = models.CASCADE)
+     
+
+ '''
+class Services(models.Model):
+    name = models.CharField(max_length=100)
+    # Column holds a brief description of the service
+    description =models.TextField(max_length=500, help_text="Provide a description of the Service")
+
+    #Method returns a string representation of the name of the service being provided by the hospital
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "Services"
+    

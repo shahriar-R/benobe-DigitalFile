@@ -1,4 +1,4 @@
-from django.db import models
+'''from django.db import models
 
 from doctor.models import Doctor
 
@@ -17,4 +17,4 @@ class Patient(models.Model):
     
     def __str__(self):
         return f"{self.name}-{self.doctor.name}"
-	
+	'''
