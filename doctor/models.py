@@ -1,11 +1,10 @@
 from django.db import models
-'''
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 import datetime
 
 
 
-
+User = get_user_model()
 
 class Doctor(models.Model):
     departments=[('Cardiologist','Cardiologist'),   
@@ -32,14 +31,14 @@ class Doctor(models.Model):
         return self.name
     
 
+'''
 class Receptionist(models.Model):
 	name = models.CharField(max_length=40)
 	phone = models.CharField(max_length=12,default="",unique=True)
 	doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE)
 	username = models.OneToOneField(User,on_delete = models.CASCADE)
      
-
- '''
+    '''
 class Services(models.Model):
     name = models.CharField(max_length=100)
     # Column holds a brief description of the service
@@ -51,4 +50,3 @@ class Services(models.Model):
     
     class Meta:
         verbose_name_plural = "Services"
-    
