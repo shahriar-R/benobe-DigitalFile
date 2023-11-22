@@ -38,7 +38,7 @@ class UserManager(BUM):
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 	phone_number = models.CharField(max_length=11, unique=True)
 	
-	is_active = models.BooleanField(default=False)
+	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 
 	objects = UserManager()
@@ -47,7 +47,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 	
 
 	def __str__(self):
-		return f"{self.first_name}_{self.last_name}"
+		return self.phone_number
 
 	@property
 	def is_staff(self):

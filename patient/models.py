@@ -8,7 +8,7 @@ User = get_user_model()
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "user_{0}/{1}".format(instance.user.id, filename)
+    return "user_{0}/{1}".format(instance.id, filename)
 
 
 class File(models.Model):
@@ -17,7 +17,7 @@ class File(models.Model):
     files = models.FileField(upload_to=user_directory_path)
 
     def __str__(self):
-        return self.number_id
+        return self.date
 
 
 
@@ -48,7 +48,7 @@ class Patient(models.Model):
 
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
-    born = models.IntegerField()
+    born = models.IntegerField()# change
     age = models.IntegerField()
     phone = models.CharField(max_length=12,default="",unique=True)
     marital_status = models.CharField(choices=marital_choices,max_length=30)
@@ -57,4 +57,4 @@ class Patient(models.Model):
     
     
     def __str__(self):
-        return f"{self.name}-{self.doctor.name}"
+        return f"{self.firstname}-{self.lastname}"
