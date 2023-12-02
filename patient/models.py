@@ -45,6 +45,7 @@ class Patient(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
     file = models.ForeignKey(File, on_delete= models.SET_NULL,null=True, related_name="file")
     test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, related_name="test")
+    national_code = models.CharField(max_length=10, unique=True)
 
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
