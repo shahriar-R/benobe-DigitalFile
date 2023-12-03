@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+import uuid
 
 from doctor.models import Doctor
 
@@ -45,7 +46,7 @@ class Patient(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
     file = models.ForeignKey(File, on_delete= models.SET_NULL,null=True, related_name="file")
     test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, related_name="test")
-    national_code = models.CharField(max_length=10, unique=True)
+    national_code = models.CharField(max_length=10, unique=True,default=uuid.uuid1, null=True, blank=True)
 
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)

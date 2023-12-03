@@ -7,6 +7,8 @@ app_name = "patient"
 
 router = DefaultRouter()
 router.register("patient", views.PatientModelViewSet, basename="patient")
+router.register("test", views.TestModelViewSet, basename="test")
+router.register("file", views.FileModelViewSet, basename="file")
 
 urlpatterns = router.urls
 
