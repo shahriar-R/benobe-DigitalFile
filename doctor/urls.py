@@ -1,13 +1,12 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
 from . import views
 
-urlpatterns = [
-    # path('register_adm/',views.register_adm_view,name='register_adm.html'),
-    # path('registr_doce/',views.register_doc_view,name='register_doc.html'),
-    path('services', views.ServicesListView.as_view(), name='services-list'),
-    path('services/new/', views.ServicesCreateView.as_view(), name='services-create'),
-    path('services/<int:pk>/delete/', views.ServicesDeleteView.as_view(), name='services-delete'),
-    
-]
+app_name = "doctor"
 
+router = DefaultRouter()
+router.register("doctor", views.DoctorModelViewSet, basename="doctor")
+
+
+urlpatterns = router.urls

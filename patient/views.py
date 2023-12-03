@@ -40,34 +40,34 @@ class PatientModelViewSet(viewsets.ModelViewSet):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-class TestModelViewSet(viewsets.ModelViewSet):
-    serializer_class = TestSerializer
-    queryset = Test.objects.all()
+# class TestModelViewSet(viewsets.ModelViewSet):
+#     serializer_class = TestSerializer
+#     queryset = Test.objects.all()
 
 
-    def create(self, request, *args, **kwargs):
+#     def create(self, request, *args, **kwargs):
         
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-class FileModelViewSet(viewsets.ModelViewSet):
-    serializer_class = FileSerializer
-    queryset = File.objects.all()
+# class FileModelViewSet(viewsets.ModelViewSet):
+#     serializer_class = FileSerializer
+#     queryset = File.objects.all()
 
 
-    def create(self, request, *args, **kwargs):
+#     def create(self, request, *args, **kwargs):
         
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
