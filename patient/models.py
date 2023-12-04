@@ -12,40 +12,25 @@ def user_directory_path(instance, filename):
     return "user_{0}/{1}".format(instance.id, filename)
 
 
-class File(models.Model):
-    number_id = models.IntegerField(unique=True)
-    date = models.CharField(max_length=30)
-    files = models.FileField(upload_to=user_directory_path)
-
-    def __str__(self):
-        return self.date
-
-
-
-class Test(models.Model):
-
-    date = models.CharField(max_length=30)
-    type_test = models.TextField()
-    out_test = models.TextField()
-    date_test = models.DateTimeField()
-    normal_values= models.CharField(max_length=100, blank=True, null=True)
-
-    def __str__(self):
-        return self.date
-
-
 
 class Patient(models.Model):
 
     gender_choices =  ( ('woman', "زن"),('men', "مرد"),)
         
     marital_choices =(("married", "متاهل"),("single", "مجرد"),)
+    number_id = models.IntegerField(unique=True)
+    date = models.CharField(max_length=30)
+    files = models.FileField(upload_to=user_directory_path)
     
-    
+    date = models.CharField(max_length=30)
+    type_test = models.TextField()
+    out_test = models.TextField()
+    date_test = models.DateTimeField()
+    normal_values= models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
-    file = models.ForeignKey(File, on_delete= models.SET_NULL,null=True, related_name="file")
-    test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, related_name="test")
+    # file = models.ForeignKey(File, on_delete= models.SET_NULL,null=True, related_name="file")
+    # test = models.ForeignKey(Test, on_delete=models.SET_NULL, null=True, related_name="test")
     national_code = models.CharField(max_length=10, unique=True,default=uuid.uuid1, null=True, blank=True)
 
     firstname = models.CharField(max_length=100)
