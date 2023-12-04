@@ -24,6 +24,8 @@ class Doctor(models.Model):
     address = models.CharField(max_length=300,default="address")
     details = models.TextField()
     experience = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     
     
 
@@ -50,3 +52,10 @@ class Services(models.Model):
     
     class Meta:
         verbose_name_plural = "Services"
+
+class Secretary(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete= models.SET_NULL,null=True ,related_name='doctor')
+    username = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=11)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
