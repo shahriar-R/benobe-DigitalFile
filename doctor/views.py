@@ -5,10 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 
 from . models import Doctor, Secretary
 from .serializers import DoctorSerializer, SecretarySerializer
+from .permissions import IsDoctorPermission
 
 
 
 class DoctorModelViewSet(viewsets.ModelViewSet):
+    '''if admin set activate then is active (-)'''
 
     permission_classes = [IsAuthenticated]
     serializer_class = DoctorSerializer
@@ -27,12 +29,12 @@ class DoctorModelViewSet(viewsets.ModelViewSet):
 
 class SecretaryModelViewSet(viewsets.ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsDoctorPermission]
     serializer_class = SecretarySerializer
     queryset = Secretary.objects.all()
 
     def create(self, request, *args, **kwargs):
-        
+        ''' if user is doctor can create (-)'''
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()

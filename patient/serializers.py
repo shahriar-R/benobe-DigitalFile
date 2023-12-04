@@ -20,7 +20,7 @@ class PatientSerializer(serializers.ModelSerializer):
         return rep
         
      def create(self, validated_data):
-        return Patient.objects.create(validated_data)
+        return Patient.objects.create(**validated_data)
         
     #  def create(self, validated_data):
 

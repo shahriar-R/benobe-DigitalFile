@@ -54,6 +54,7 @@ class Services(models.Model):
         verbose_name_plural = "Services"
 
 class Secretary(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE,related_name= "secretery") #user foreign key
     doctor = models.ForeignKey(Doctor, on_delete= models.SET_NULL,null=True ,related_name='doctor')
     username = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=11)

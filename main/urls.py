@@ -40,6 +40,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path('admin/', admin.site.urls),
+    path('accounts/', include('users.urls', namespace='users')),
     # path('doctor/', include('doctor.urls')),
     path('', include('doctor.urls')),
     path('patient/', include('patient.urls')),
