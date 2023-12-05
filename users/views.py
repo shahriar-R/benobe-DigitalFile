@@ -7,8 +7,9 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import UserRegisterSerializer, UserSerializer
+from .serializers import UserRegisterSerializer, UserSerializer, CustomTokenObtainPairSerializer, CustomAuthTokenSerializer
 
 # Create your views here.
 User = get_user_model()
@@ -54,17 +55,20 @@ class UserViewSet(viewsets.ViewSet):
 		return Response({'message':'user deactivated'})
 	
 class CustomObtainAuthToken(ObtainAuthToken):
-	pass
-    # serializer_class = CustomAuthTokenSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     serializer = self.serializer_class(
-    #         data=request.data, context={"request": request}
-    #     )
-    #     serializer.is_valid(raise_exception=True)
-    #     user = serializer.validated_data["user"]
-    #     token, created = Token.objects.get_or_create(user=user)
-    #     return Response({"token": token.key, "user_id": user.pk, "email": user.email})
+    serializer_class = CustomAuthTokenSerializer
+	
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
+		
+        serializer.is_valid(raise_exception=True)
+		# print('***********************')
+		# print(serializer.validated_data)
+        user = serializer.validated_data["user"]
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key, "user_id": user.pk, "phone_number": user.phone_number})
 
 class CustomDiscardAuthToken(APIView):
     permission_classes = [IsAuthenticated]
@@ -72,3 +76,6 @@ class CustomDiscardAuthToken(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+	
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

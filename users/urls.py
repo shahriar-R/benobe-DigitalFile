@@ -14,17 +14,23 @@ app_name = 'accounts'
 # router = routers.SimpleRouter()
 # router.register('user', views.UserViewSet)
 # urlpatterns += router.urls
+    
 
 urlpatterns = [
-        path('jwt/', include(([
-            path('login/', TokenObtainPairView.as_view(),name="login"),
-            path('refresh/', TokenRefreshView.as_view(),name="refresh"),
-            path('verify/', TokenVerifyView.as_view(),name="verify"),
-            ], "jwt")),),
+        
         path("token/login/", views.CustomObtainAuthToken.as_view(), name="token-login"),
         path(
-            "token/logout/",
-            views.CustomDiscardAuthToken.as_view(),
-            name="token-logout",
-        ),
+        "token/logout/",
+        views.CustomDiscardAuthToken.as_view(),
+        name="token-logout",
+    ),
+    # login jwt
+        path(
+        "jwt/create/",
+        views.CustomTokenObtainPairView.as_view(),
+        name="jwt-create",
+    ),
+        path("jwt/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
+        path("jwt/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
+
 ]

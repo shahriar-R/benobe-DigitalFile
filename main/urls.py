@@ -44,5 +44,7 @@ urlpatterns = [
     # path('doctor/', include('doctor.urls')),
     path('', include('doctor.urls')),
     path('patient/', include('patient.urls')),
+    path("api-auth/", include("rest_framework.urls")),
+    # path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),
     
 ]

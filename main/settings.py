@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework_simplejwt',
+    "rest_framework.authtoken",
     'rest_framework',
+    "dj_rest_auth",
     "django_filters",
     "drf_yasg",
 
@@ -144,6 +146,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
        
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     )
 
 }
