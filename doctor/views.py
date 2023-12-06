@@ -12,7 +12,7 @@ from .permissions import IsDoctorPermission
 class DoctorModelViewSet(viewsets.ModelViewSet):
     '''if admin set activate then is active (-)'''
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsDoctorPermission]
     serializer_class = DoctorSerializer
     queryset = Doctor.objects.all()
 

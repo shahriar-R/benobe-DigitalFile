@@ -13,9 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 from drf_yasg import openapi
 
 
@@ -29,22 +32,29 @@ schema_view = get_schema_view(
         license=openapi.License(name="MIT License"),
     ),
     public=True,
-    #permission_classes=[permissions.AllowAny],
+    permission_classes=[permissions.AllowAny],
 )
 
 
 urlpatterns = [
+    # path('api/auth/', include('authentication.urls')),
+    path('admin/', admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
+    path('', include('doctor.urls')),
+    path('users/', include('users.urls')),
+    # path('doctor/', include('doctor.urls')),
+    
+    path('patient/', include('patient.urls')),
+    
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('users.urls', namespace='users')),
-    # path('doctor/', include('doctor.urls')),
-    path('', include('doctor.urls')),
-    path('patient/', include('patient.urls')),
-    path("api-auth/", include("rest_framework.urls")),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     # path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),
     
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

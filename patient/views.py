@@ -17,7 +17,7 @@ from .serializers import PatientSerializer
 
 
 class PatientModelViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PatientSerializer
     queryset = Patient.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]

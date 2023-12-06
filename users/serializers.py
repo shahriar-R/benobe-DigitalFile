@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
+
+from .models import User, Profile
 
 
 def clean_email(value):
@@ -10,12 +11,12 @@ def clean_email(value):
 		raise serializers.ValidationError('admin cant be in email')
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.ModelSerializer):
 	password2 = serializers.CharField(write_only=True, required=True)
 
 	class Meta:
 		model = User
-		fields = ('user', 'phone_number', 'password', 'password2')
+		fields = ( 'phone_number', 'password', 'password2')
 		
 
 	def create(self, validated_data):
@@ -31,7 +32,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 		if data['password'] != data['password2']:
 			raise serializers.ValidationError('passwords must match')
 		return data
-	
+
 
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -82,3 +83,9 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
+	
+class ProfileSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Profile
+		fields =["id", "first_name", "last_name", "image",]
+		

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "django_filters",
     "drf_yasg",
+   
 
     # apps
     'doctor',
